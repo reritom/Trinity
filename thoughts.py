@@ -37,7 +37,7 @@
                             "id" (str) : This is an identifier for the spark (needs defining)
                       }
             "trace":  [
-                            (str) List of relay names, starting from the origin
+                            (str) List of relay names that the spark has been routed through, starting from the origin
                       ]
 
             "message":[
@@ -66,4 +66,13 @@
     On load, run a pingpong to get local network. Timestamp local responses.
     listen for tings, use them to update timestamps (and all other packets)
     if timestamp is greater than given value, run a pingpong
+'''
+
+'''
+    Create web view for tracking packets and for maping for the graph and stats
+    allow packets to be filtered
+    have setup docs on site
+    have example processes
+
+    return data from relay before creating msg for tracer
 '''

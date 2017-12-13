@@ -15,15 +15,14 @@ class Relay(object):
             This method receives a spark from the cortex, calls the decoder and subsequent routing,
             and then returns the modified spark to the cortex
         '''
-        #received from the Cortex
+        # Received from the Cortex
 
         self.packets_received += 1
 
         routed_spark = self.decodeSpark(spark)
 
-        if routed_spark is not None:
+        if routed_spark[0] is not None:
             self.number_of_broadcasts += 1
-
 
         return routed_spark
 
@@ -42,8 +41,9 @@ class Relay(object):
         '''
         #use local map of neighbours to route the spark
         #if destination is here??
-        print(spark['header']['mode'] + " from " + spark['header']['origin'] + " aimed at " + spark['header']['destination'] + " has arrived at " + self.name)
+        #print(spark['header']['mode'] + " from " + spark['header']['origin'] + " aimed at " + spark['header']['destination'] + " has arrived at " + self.name)
         #print("Trace", spark['trace'])
+        msg = spark['header']['mode'] + " from " + spark['header']['origin'] + " aimed at " + spark['header']['destination'] + " has arrived at " + self.name
 
         '''
         this_trace = copy.deepcopy(spark['trace'])
@@ -57,21 +57,20 @@ class Relay(object):
 
         if spark['header']['destination'] == self.name and spark['header']['mode'] == 'pong':
             self.locals.add(spark['header']['origin'])
-            #i am pong, add to local map, return none
-            print("This packet has been accepted as a pong directed at this relay")
-            return None
+            msg += "\n    " + "This packet has been accepted as a pong directed at this relay"
+            return None, msg
 
         # Tings and Pongs get accepted to modify local map, but not forwarded or stored.
 
         if spark['header']['mode'] == 'pong':
             self.locals.add(spark['header']['origin'])
-            print("This packet has been accepted as an indirect pong")
-            return None
+            msg += "\n    " + "This packet has been accepted as an indirect pong"
+            return None, msg
 
         if spark['header']['mode'] == 'ting':
             self.locals.add(spark['header']['origin'])
-            print("This packet has been accepted as a ting")
-            return None
+            msg += "\n    " + "This packet has been accepted as a ting"
+            return None, msg
 
         # Pings get rerouted as pongs
 
@@ -81,24 +80,8 @@ class Relay(object):
             pong['header']['origin'] = self.name
             pong['header']['destination'] = spark['header']['origin']
             pong['trace'].append(self.name)
-            print("This packet has been accepted as a ping and forwarded as a pong")
-            return pong
+            msg += "\n    " + "This packet has been accepted as a ping and forwarded as a pong"
+            return pong, msg
 
-        print("This packet has been ignored")
-
-        return None
-
-    def checkNeighbour(self):
-        #check if a neighbour is still active, send a ping, have a daemon look for the pong
-        #remove neighbour if no reply
-        pass
-
-    def getPong(self):
-        '''
-            This method receives a pong and uses it to add a neighbour
-        '''
-        pass
-
-    def sendExplorer(self):
-        #create and send an explorer spark.
-        pass
+        msg += "\n    " + "This packet has been ignored"
+        return None, msg

@@ -5,21 +5,22 @@ def propagate():
     '''
         This method creates a cortex and adds some relay mappings
     '''
-    core = Cortex()
+    core = Cortex(debug=False)
 
     core.addRelay(1, [2,3,4,5])
-    core.addRelay(2, [1,3,4])
-    core.addRelay(3, [1,2,4,5])
-    core.addRelay(4, [1,2,3,7,8,9])
-    core.addRelay(5, [1,3])
-    core.addRelay(7, [4])
-    core.addRelay(8, [4])
-    core.addRelay(9, [4,10])
-    core.addRelay(10, [9,11,12])
-    core.addRelay(11, [10])
-    core.addRelay(12, [10])
+    core.addRelay(2, [3,4])
+    core.addRelay(3, [4,5,13])
+    core.addRelay(4, [7,8,9])
+    #core.addRelay(5, [1,3])
+    #core.addRelay(7, [4])
+    #core.addRelay(8, [4])
+    core.addRelay(9, [10])
+    core.addRelay(10, [11,12])
+    #core.addRelay(11, [10])
+    #core.addRelay(12, [10])
+    #core.addRelay(13, [3])
 
-    #core.viewCortex()
+    core.viewCortex()
     return core
 
 def xCreateSpark():
@@ -94,7 +95,7 @@ def xPingAll():
     core.routeBuffer()
 
     # Show the resulks
-    #core.showLocal()
+    core.showLocal()
     core.showRelayStats()
     core.compareMapping()
 
@@ -120,14 +121,14 @@ def xInjectExplorer():
     #core.showLocal()
     core.showRelayStats()
 
-def xTingOne(val):
+def xTingOne():
     '''
         Example - Automatic ting injection
     '''
     # Create and propagate cortex of relays
     core = propagate()
 
-    core.createTing(val)
+    core.createTing(2)
 
     # Process the packets
     core.routeBuffer()
@@ -151,7 +152,7 @@ def xTingAll():
     core.routeBuffer()
 
     # Show the resulks
-    #core.showLocal()
+    core.showLocal()
     core.showRelayStats()
     core.compareMapping()
 
@@ -178,18 +179,21 @@ def xComplex():
     core.routeBuffer()
 
     core.showRelayStats()
+    core.compareMapping()
 
 
 if __name__ == '__main__':
     print("\n<--- Start --->\n")
 
-    #xPingAll()
+    xPingAll()
     #xInjectPing()
     #xPingOne()
     #xCreateSpark()
     #xInjectExplorer()
-    #xTingOne(2)
+    #xTingOne()
     #xTingAll()
-    xComplex()
+    #xComplex()
+    #propagate()
+
 
     print("\n<--- End --->\n")

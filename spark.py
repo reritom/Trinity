@@ -2,9 +2,8 @@ import random, string
 
 class Spark(object):
     def __init__(self, origin=None, destination=None, mode=None):
-
-        self.message = list()
         self.encoded = False
+        self.message = list()
 
         self.header = {'origin': str(origin),
                        'destination': str(destination),
@@ -19,7 +18,7 @@ class Spark(object):
                       'emissary',   # Used for sending actions
                       'ping',       # Used for finding neighbours outward
                       'pong',       # Used for finding neighbours return
-                      'ting']       # Used for broadcast in relay presence 
+                      'ting']       # Used for broadcast in relay presence
 
     def getID(self):
         return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(6))
@@ -173,7 +172,7 @@ class Spark(object):
 
         print('<--- Message --->')
         if not self.message:
-            print("No actions")
+            print(None)
         else:
             for action in self.message:
                 print(action)
