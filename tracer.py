@@ -1,3 +1,5 @@
+import os
+
 class Tracer(object):
     def __init__(self):
         self.debug = True
@@ -9,6 +11,13 @@ class Tracer(object):
                     'NORMAL':'\033[1;37;40m',
                     'STAT':'\033[1;34m',
                     'SPARK':'\033[1;32m'}
+
+        # This colour tagging only works in unix/posix
+
+        if os.name != "posix":
+            for col in self.col:
+                self.col[col] = ""
+
 
     def debugOn(self):
         '''
