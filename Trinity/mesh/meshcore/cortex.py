@@ -1,6 +1,11 @@
-from mesh.meshcore.relay import Relay
-from mesh.meshcore.spark import Spark
-from mesh.meshcore.tracer import Tracer
+try:
+    from mesh.meshcore.relay import Relay
+    from mesh.meshcore.spark import Spark
+    from mesh.meshcore.tracer import Tracer
+except:
+    from relay import Relay
+    from spark import Spark
+    from tracer import Tracer
 import copy
 
 class Cortex(Tracer):

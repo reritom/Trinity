@@ -1,5 +1,12 @@
-from mesh.meshcore.cortex import Cortex
-from mesh.meshcore.spark import Spark
+
+try:
+    from mesh.meshcore.cortex import Cortex
+    from mesh.meshcore.relay import Relay
+    from mesh.meshcore.spark import Spark
+except:
+    from cortex import Cortex
+    from relay import Relay
+    from spark import Spark
 
 def propagate():
     '''
@@ -194,6 +201,5 @@ if __name__ == '__main__':
     #xTingAll()
     #xComplex()
     #propagate()
-
 
     print("\n<--- End --->\n")

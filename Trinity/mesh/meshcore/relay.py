@@ -1,4 +1,8 @@
-from mesh.meshcore.spark import Spark
+try:
+    from mesh.meshcore.spark import Spark
+except:
+    from spark import Spark
+    
 import copy
 
 class Relay(object):
