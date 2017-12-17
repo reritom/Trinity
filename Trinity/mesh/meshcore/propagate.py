@@ -1,5 +1,5 @@
-from cortex import Cortex
-from spark import Spark
+from mesh.meshcore.cortex import Cortex
+from mesh.meshcore.spark import Spark
 
 def propagate():
     '''

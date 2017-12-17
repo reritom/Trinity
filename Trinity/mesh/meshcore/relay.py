@@ -1,4 +1,4 @@
-from spark import Spark
+from mesh.meshcore.spark import Spark
 import copy
 
 class Relay(object):
