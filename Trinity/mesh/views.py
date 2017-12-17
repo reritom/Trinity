@@ -12,5 +12,4 @@ def test(request):
 
 def gogo(request):
     red = propagate()
-    print(red)
     return render(request, 'mesh/test.html')

@@ -18,16 +18,9 @@ def propagate():
     core.addRelay(2, [3,4])
     core.addRelay(3, [4,5,13])
     core.addRelay(4, [7,8,9])
-    #core.addRelay(5, [1,3])
-    #core.addRelay(7, [4])
-    #core.addRelay(8, [4])
     core.addRelay(9, [10])
     core.addRelay(10, [11,12])
-    #core.addRelay(11, [10])
-    #core.addRelay(12, [10])
-    #core.addRelay(13, [3])
 
-    core.viewCortex()
     return core
 
 def xCreateSpark():
