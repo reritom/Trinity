@@ -45,56 +45,95 @@ In the file, under "if __name__=='__main__', comment/uncomment the example you w
 python propagate.py
 ```
 
+## Terminology and basic introduction
+
+This section will introduce the main classes and principles of the mesh simulator.
+A mesh network consists of multiple nodes or relays. A device is able to interact with a relay to send packets throughout the network of relays to a desired destination. This project allows you to develop your own types of packets, and your own routing rules. The routing rules are what the relays use to determine how to handle the packet, what changes need to be made to the packet, and where to route it to.
+
+# Spark
+
+The spark is the name for the packet used in this system. For the simplictiy, it is a JSON object of the following format
+
+```
+{
+"header": {
+          "origin" (str) : The name of the origin relay
+          "destination" (str) : The destination relay. "None" if it is a ping or explorer
+          "mode" (str) : This is the type of spark.
+          "id" (str) : This is an identifier for the spark (needs defining)
+          }
+"trace":  [
+          (str) List of relay names that the spark has been routed through, starting from the origin
+          ]
+"message":[
+          (str) List of messages in a defined format
+          ]
+}
+```
+
+A spark can be one of multiple modes which have different purposes.
+
+    ping - An outward packet sent from a relay. If a ping is received, the only response is a pong. This allows a relay to map
+           its local network.
+           
+    pong - if a ping is received, a pong is sent, with its destination set as the origin of the ping.
+    
+    ting - a relay broadcasting its presence, but expecting no reply.
+    
+    explorer - An explorer is sent by a relay to map an entire network
+    
+    atlas - explorers trigger the release of atlas packets, which return from different points in the network to the origin
+    
+    emmisary - this carries an action message from an origin to a known destination. Such as sending a data request
+
+# Cortex
+
+The Cortex is the name for the class which simulates the channels. This class is used to create a graph which creates relay objects, links them, and handles the buffer which simulates the routing of the sparks.
+
+```
+PUT HERE AN EXAMPLE OF INSTANTIATING, ADDING RELAYS
+```
+
+# Relay
+
+The relay receives the spark from the cortex, decodes it, and then determines how to route it, while also taking relevent data and adding it the relays local network mapping. It then returns a message to the cortex for tracing, and either a None or a spark, if there is something to be routed.
+
+When initialised, the relay isn't aware of any of its surrounding relays. To find them, it either has to receive a Ting from them all, or broadcast a Ping and receive and Pong from each of them.
+
 ## Running the tests
 
-Explain how to run the automated tests for this system
+This system has tests for the mesh simulation aspect. But will need to be adjusted/rewritten depending on what routing algorithms you implement.
 
-### Break down into end to end tests
+### Break down of mesh tests
 
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
+The tests can be found in Trinity/Trinity/mesh/meshcore/tests/tests.py
+To add a new test, follow the following title and docstring format:
 
 ```
-Give an example
+def testTestname():
+  '''
+      Test - Information about the test goes here..
+  '''
 ```
 
-## Deployment
+Tests can either be run directly or they can all be run using the following command in the tests directory:
 
-Add additional notes about how to deploy this on a live system
+```
+python runTests.py
+```
 
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+When creating your own test, the general format is:
+```
+- Create a cortex
+- Add the relays
+- Add some sensors (Optional)
+- Inject a packet
+- Then:
+-   Compare the expected local maps of the relays with what you expect
+-   Or check whether a packet has reached the desired destination
+-   Or check whether a sensor in the network has been detected
+```
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
+* **Tomas Sheers** - *Initial work* - [reritom](https://github.com/reritom)
