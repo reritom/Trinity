@@ -74,6 +74,9 @@ class Cortex(Tracer):
 
         self.traceLineDB()
 
+    def bridgeGraph(self, graph, bridge_link, existing_link):
+        pass
+
     @Tracer.headerStyle
     def viewCortex(self):
         '''
