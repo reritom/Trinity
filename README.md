@@ -25,23 +25,21 @@ A step by step series of examples that tell you have to get a development env ru
 Clone the repository
 ```
 If you have installed Django:
+
+- Navigate to Trinity/Trinity (there should be a manage.py file in this directory)
+- Run the following command in the command line:
 ```
-Navigate to Trinity/Trinity (there should be a manage.py file in this directory)
-```
-```
-Run the following command in the command line:
 python manage.py runserver
 ```
-```
-In your browser navigate to 127.0.0.1:8000 (localhost) to use the web interface
-```
+
+- In your browser navigate to 127.0.0.1:8000 (localhost) to use the web interface
+
 From the command line:
-```
-Navigate to Trinity/Trinity/mesh/meshcore (This is where the mesh code is)
-```
-```
+- Navigate to Trinity/Trinity/mesh/meshcore (This is where the mesh code is)
+
 The file propagate.py has some network creation and packet injection examples.
-In the file, under "if __name__=='__main__', comment/uncomment the example you want to use and then run:
+In the file, under "if __name__=='__main__'", comment/uncomment the example you want to use and then run:
+```
 python propagate.py
 ```
 
