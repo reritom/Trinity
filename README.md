@@ -219,6 +219,7 @@ When creating your own test, the general format is:
 - Sensors should be added, to simulate devices interacting with the network
 - Add a spark (Pilgrim) which is destined for all relays, to searching for relays in the network which have connected devices. Similar behaviour to an Explorer
 - Create an example function which propagates the local mappings of relays so that routing can be tested more easily.
+- Add an application layer to the sensor which allows for message encryption (#FeatureDrift)
 
 ## Authors
 
