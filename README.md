@@ -205,9 +205,9 @@ When creating your own test, the general format is:
 - Add some sensors (Optional)
 - Inject a packet
 - Then:
---   Compare the expected local maps of the relays with what you expect
---   Or check whether a packet has reached the desired destination
---   Or check whether a sensor in the network has been detected
+-   Compare the expected local maps of the relays with what you expect
+-   Or check whether a packet has reached the desired destination
+-   Or check whether a sensor in the network has been detected
 
 
 ## Things to do
