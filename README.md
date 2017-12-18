@@ -220,6 +220,7 @@ When creating your own test, the general format is:
 - Create an example function which propagates the local mappings of relays so that routing can be tested more easily.
 - Add an application layer to the sensor which allows for message encryption (#FeatureDrift)
 - For implementing routing (https://pdfs.semanticscholar.org/379d/087b54850fa6d98c07c2e3bb66f51a109179.pdf)
+- When running multiple injections, add tags to the logs of each section so that logs can be sorted in Django better
 
 ## Authors
 
