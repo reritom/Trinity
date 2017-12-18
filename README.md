@@ -1,36 +1,49 @@
 # Trinity
 
-Trinity is a Python based mesh network simulator with a Django HTML/CSS GUI. The purpose of this project is to let you develop routing algorithms for broadcast mesh networks
+Trinity is a Python based mesh network simulator with a Django HTML/CSS GUI. The purpose of this project is to let you develop routing algorithms for broadcast mesh networks.
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+The mesh simulator can be run directly from the command line without using the Django interface.
 
 ### Prerequisites
 
 What things you need to install the software and how to install them
 
 ```
-Give examples
+Python 3.5+
+Django v1.11.1 (for GUI, not required for cmd-line usage)
 ```
 
 ### Installing
 
 A step by step series of examples that tell you have to get a development env running
 
-Say what the step will be
-
 ```
-Give the example
+Clone the repository
 ```
-
-And repeat
-
+If you have installed Django:
 ```
-until finished
+Navigate to Trinity/Trinity (there should be a manage.py file in this directory)
 ```
-
-End with an example of getting some data out of the system or using it for a little demo
+```
+Run the following command in the command line:
+python manage.py runserver
+```
+```
+In your browser navigate to 127.0.0.1:8000 (localhost) to use the web interface
+```
+From the command line:
+```
+Navigate to Trinity/Trinity/mesh/meshcore (This is where the mesh code is)
+```
+```
+The file propagate.py has some network creation and packet injection examples.
+In the file, under "if __name__=='__main__', comment/uncomment the example you want to use and then run:
+python propagate.py
+```
 
 ## Running the tests
 
