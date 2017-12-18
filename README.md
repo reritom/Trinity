@@ -2,6 +2,8 @@
 
 Trinity is a Python based mesh network simulator with a Django HTML/CSS GUI. The purpose of this project is to let you develop routing algorithms for broadcast mesh networks.
 
+### Note: This is still in development. The Django GUI hasn't been made, and routing algorithms are still being developed.
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
