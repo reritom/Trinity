@@ -21,9 +21,8 @@ Django v1.11.1 (for GUI, not required for cmd-line usage)
 
 A step by step series of examples that tell you have to get a development env running
 
-```
-Clone the repository
-```
+- Clone the repository
+
 If you have installed Django:
 
 - Navigate to Trinity/Trinity (there should be a manage.py file in this directory)
