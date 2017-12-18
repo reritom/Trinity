@@ -50,7 +50,7 @@ python propagate.py
 This section will introduce the main classes and principles of the mesh simulator.
 A mesh network consists of multiple nodes or relays. A device is able to interact with a relay to send packets throughout the network of relays to a desired destination. This project allows you to develop your own types of packets, and your own routing rules. The routing rules are what the relays use to determine how to handle the packet, what changes need to be made to the packet, and where to route it to.
 
-# Spark
+### Spark
 
 The spark is the name for the packet used in this system. For the simplictiy, it is a JSON object of the following format
 
@@ -86,12 +86,39 @@ A spark can be one of multiple modes which have different purposes.
     
     emmisary - this carries an action message from an origin to a known destination. Such as sending a data request
 
+The spark class is used to create a spark, the following example creates a spark with the origin being a relay named '1', and no set destination, with the ping mode, and two actions (though pings wouldn't carry actions in practise):
+
+```
+spark = Spark(origin=1, destination=None, mode='ping')
+
+# Add two actions to the message
+spark.addAction("RUN")
+spark.addAction("RESTART")
+
+# Show the spark
+spark.showSpark()
+
+# Encode the spark and show the result
+spark.encodeSpark()
+this_spark = spark.getSpark()
+print(this_spark)
+```
+
 # Cortex
 
 The Cortex is the name for the class which simulates the channels. This class is used to create a graph which creates relay objects, links them, and handles the buffer which simulates the routing of the sparks.
 
+The following example creates a cortex, and adds some relays into the graph. With debug set to True, there are a lot more logs of what is happening in the cortex.
+
 ```
-PUT HERE AN EXAMPLE OF INSTANTIATING, ADDING RELAYS
+core = Cortex(debug=False)
+
+core.addRelay(1, [2,3,4,5])
+core.addRelay(2, [3,4])
+core.addRelay(3, [4,5,13])
+core.addRelay(4, [7,8,9])
+core.addRelay(9, [10])
+core.addRelay(10, [11,12])
 ```
 
 # Relay
@@ -99,6 +126,49 @@ PUT HERE AN EXAMPLE OF INSTANTIATING, ADDING RELAYS
 The relay receives the spark from the cortex, decodes it, and then determines how to route it, while also taking relevent data and adding it the relays local network mapping. It then returns a message to the cortex for tracing, and either a None or a spark, if there is something to be routed.
 
 When initialised, the relay isn't aware of any of its surrounding relays. To find them, it either has to receive a Ting from them all, or broadcast a Ping and receive and Pong from each of them.
+
+## Full Example
+
+The following example creates a cortex, adds some relays, and then injects a Ting from each of the relays (This would allow all of the relays to become aware of all of their neighbouring relays.
+
+```
+def propagate():
+    '''
+        This method creates a cortex and adds some relay mappings
+    '''
+    core = Cortex(debug=False)
+
+    core.addRelay(1, [2,3,4,5])
+    core.addRelay(2, [3,4])
+    core.addRelay(3, [4,5,13])
+    core.addRelay(4, [7,8,9])
+    core.addRelay(9, [10])
+    core.addRelay(10, [11,12])
+
+    return core
+    
+def xTingAll():
+    '''
+        Example - Have all the relays send a ting
+    '''
+    # Create and propagate a cortex of relays
+    core = propagate()
+
+    # Inject ting packets for each of the relays
+    core.tingAll()
+
+    # Process the packets
+    core.routeBuffer()
+
+    # Show the resulks
+    core.showLocal()
+    core.showRelayStats()
+    core.compareMapping()
+    
+if __name__ == '__main__':
+    xTingAll()
+```
+
 
 ## Running the tests
 
