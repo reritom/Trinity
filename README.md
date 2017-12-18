@@ -104,7 +104,7 @@ this_spark = spark.getSpark()
 print(this_spark)
 ```
 
-# Cortex
+### Cortex
 
 The Cortex is the name for the class which simulates the channels. This class is used to create a graph which creates relay objects, links them, and handles the buffer which simulates the routing of the sparks.
 
@@ -121,7 +121,7 @@ core.addRelay(9, [10])
 core.addRelay(10, [11,12])
 ```
 
-# Relay
+### Relay
 
 The relay receives the spark from the cortex, decodes it, and then determines how to route it, while also taking relevent data and adding it the relays local network mapping. It then returns a message to the cortex for tracing, and either a None or a spark, if there is something to be routed.
 
@@ -169,6 +169,12 @@ if __name__ == '__main__':
     xTingAll()
 ```
 
+## Small Example with walkthrough
+
+```
+TODO - Create 3 relay cortex, inject packet, explain where it goes and whats happening
+```
+
 
 ## Running the tests
 
@@ -203,6 +209,16 @@ When creating your own test, the general format is:
 -   Or check whether a packet has reached the desired destination
 -   Or check whether a sensor in the network has been detected
 ```
+
+## Things to do
+
+- The cortex needs to be able to handle different channels with different rules, for example, to simulate a network which uses both RF and Bluetooth to connect relays.
+- Relative distances between relays should be added, so that the order that packets are received can be simulated.
+- Django GUI needs finishing
+- Basic routing protocols should be applied and documented.
+- Sensors should be added, to simulate devices interacting with the network
+- Add a spark (Pilgrim) which is destined for all relays, to searching for relays in the network which have connected devices. Similar behaviour to an Explorer
+- Create an example function which propagates the local mappings of relays so that routing can be tested more easily.
 
 ## Authors
 
