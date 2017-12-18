@@ -224,6 +224,7 @@ When creating your own test, the general format is:
 - Create a graph generator. Allow for 1 to n-1 neighbours. Allow the topology to change during the simulation.
 - Make a packet for naming a relay and linking a sensor name to a relay.
 - Make a packet which checks the relay name doesn't exist in the local network already.
+- Add ability to turn on/off relays and add/rename relays mid simulation
 
 ## Authors
 
