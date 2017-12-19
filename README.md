@@ -135,7 +135,9 @@ The relay receives the spark from the cortex, decodes it, and then determines ho
 
 When initialised, the relay isn't aware of any of its surrounding relays. To find them, it either has to receive a Ting from them all, or broadcast a Ping and receive and Pong from each of them.
 
-## Full Example
+## Examples
+
+### Inject Ting Packets for all relays
 
 The following example creates a cortex, adds some relays, and then injects a Ting from each of the relays (This would allow all of the relays to become aware of all of their neighbouring relays.
 
@@ -177,7 +179,49 @@ if __name__ == '__main__':
     xTingAll()
 ```
 
-## Small Example with walkthrough
+### Create a single packet and inject it
+
+```
+def propagate():
+    '''
+        This method creates a cortex and adds some relay mappings
+    '''
+    core = Cortex(debug=False)
+
+    core.addRelay(1, [2,3,4,5])
+    core.addRelay(2, [3,4])
+    core.addRelay(3, [4,5,13])
+    core.addRelay(4, [7,8,9])
+    core.addRelay(9, [10])
+    core.addRelay(10, [11,12])
+
+    return core
+    
+def xInjectExplorer():
+    '''
+        Example - Manual ping injection
+    '''
+    # Create and propagate cortex of relays
+    core = propagate()
+
+    # Create a spark
+    spark = Spark(origin=1, destination=None, mode='explorer')
+    spark.encodeSpark()
+    this_spark = spark.getSpark()
+
+    # Inject spark in to the cortex
+    core.inject(this_spark)
+    core.routeBuffer()
+
+    # Results
+    core.showLocal()
+    core.showRelayStats()
+    
+if __name__ == '__main__':
+    xInjectExplorer()
+```
+
+### Small Example with walkthrough
 
 ```
 TODO - Create 3 relay cortex, inject packet, explain where it goes and whats happening
