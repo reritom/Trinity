@@ -126,6 +126,7 @@ Currently, the relay connections are assumed to be bi-directional. Therefore, fo
 core = Cortex(debug=False)
 
 core.addRelay(1, [2])
+# core.addRelay(2, [1]) # This line is not needed
 ```
 
 ### Relay
