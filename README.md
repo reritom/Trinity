@@ -120,6 +120,14 @@ core.addRelay(9, [10])
 core.addRelay(10, [11,12])
 ```
 
+Currently, the relay connections are assumed to be bi-directional. Therefore, for following snippet creates two relays with bi-directional communication implicitly.
+
+```
+core = Cortex(debug=False)
+
+core.addRelay(1, [2])
+```
+
 ### Relay
 
 The relay receives the spark from the cortex, decodes it, and then determines how to route it, while also taking relevent data and adding it the relays local network mapping. It then returns a message to the cortex for tracing, and either a None or a spark, if there is something to be routed.
