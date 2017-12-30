@@ -80,3 +80,8 @@
 '''
     Create physical system. Add application layer with chat system example
 '''
+'''
+    When timing is implemented, introduce packet loss due to collisions
+    add a module that handles declarations of broadcast intent (for collision avoidance)
+    
+'''

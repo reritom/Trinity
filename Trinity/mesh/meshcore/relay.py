@@ -2,7 +2,7 @@ try:
     from mesh.meshcore.spark import Spark
 except:
     from spark import Spark
-    
+
 import copy
 
 class Relay(object):
@@ -43,11 +43,11 @@ class Relay(object):
         '''
             This method modifies the spark for routing purposes based on the contents of it.
         '''
-        #use local map of neighbours to route the spark
-        #if destination is here??
-        #print(spark['header']['mode'] + " from " + spark['header']['origin'] + " aimed at " + spark['header']['destination'] + " has arrived at " + self.name)
-        #print("Trace", spark['trace'])
-        msg = spark['header']['mode'] + " from " + spark['header']['origin'] + " aimed at " + spark['header']['destination'] + " has arrived at " + self.name
+
+        log = {'mode': spark['header']['mode'],
+               'origin': spark['header']['origin'],
+               'destination': spark['header']['destination'],
+               'arrival': self.name}
 
         '''
         this_trace = copy.deepcopy(spark['trace'])
@@ -61,20 +61,20 @@ class Relay(object):
 
         if spark['header']['destination'] == self.name and spark['header']['mode'] == 'pong':
             self.locals.add(spark['header']['origin'])
-            msg += "\n    " + "This packet has been accepted as a pong directed at this relay"
-            return None, msg
+            log['status'] = "This packet has been accepted as a pong directed at this relay"
+            return None, log
 
         # Tings and Pongs get accepted to modify local map, but not forwarded or stored.
 
         if spark['header']['mode'] == 'pong':
             self.locals.add(spark['header']['origin'])
-            msg += "\n    " + "This packet has been accepted as an indirect pong"
-            return None, msg
+            log['status'] = "This packet has been accepted as an indirect pong"
+            return None, log
 
         if spark['header']['mode'] == 'ting':
             self.locals.add(spark['header']['origin'])
-            msg += "\n    " + "This packet has been accepted as a ting"
-            return None, msg
+            log['status'] = "This packet has been accepted as a ting"
+            return None, log
 
         # Pings get rerouted as pongs
 
@@ -84,8 +84,9 @@ class Relay(object):
             pong['header']['origin'] = self.name
             pong['header']['destination'] = spark['header']['origin']
             pong['trace'].append(self.name)
-            msg += "\n    " + "This packet has been accepted as a ping and forwarded as a pong"
-            return pong, msg
 
-        msg += "\n    " + "This packet has been ignored"
-        return None, msg
+            log['status'] = "This packet has been accepted as a ping and forwarded as a pong"
+            return pong, log
+
+        log['status'] = "This packet has been ignored"
+        return None, log

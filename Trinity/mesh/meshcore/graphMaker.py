@@ -36,6 +36,7 @@ def graphMaker(name_min, name_max, name_chance, node_min, node_max, node_chance,
 
     if topology == 'cyclic':
         # Have last relays be neighbours with first relays
+        pass
     elif topology == 'branch':
         # Have last not overlap with first
         pass
@@ -44,8 +45,10 @@ def graphMaker(name_min, name_max, name_chance, node_min, node_max, node_chance,
         pass
     elif topology == 'star':
         # One node which routes everything
+        pass
     elif topology == 'all':
         # Have everything connected to everything (cascade)
+        pass
 
     print(num_of_relays)
 

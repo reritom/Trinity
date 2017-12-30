@@ -6,7 +6,9 @@ except:
     from relay import Relay
     from spark import Spark
     from tracer import Tracer
+
 import copy
+from collections import OrderedDict
 
 class Cortex(Tracer):
     '''
@@ -17,6 +19,8 @@ class Cortex(Tracer):
     def __init__(self, debug=True):
         Tracer.__init__(self)
         self.debug = debug
+        self.logs = OrderedDict()
+        self.log_count = 0
 
         self.relays = dict()
         self.graph = dict()
@@ -174,9 +178,14 @@ class Cortex(Tracer):
             top_spark_in_buffer = self.buffer.pop(0)
 
             # Pass the spark to the destination relay
-            result_spark, result_trace = self.relays[top_spark_in_buffer[0]].receiveSpark(dict(top_spark_in_buffer[1]))
+            result_spark, result_log = self.relays[top_spark_in_buffer[0]].receiveSpark(dict(top_spark_in_buffer[1]))
 
+            result_trace = self.sparkLogGen(result_log)
             self.traceSpark(result_trace)
+
+            self.log_count += 1
+            self.logs[self.log_count] = result_log
+            #also add the log to the big log list
 
             if result_spark is not None:
                 for destination_of_result in self.graph[result_spark['header']['origin']]:
@@ -236,3 +245,18 @@ class Cortex(Tracer):
 
         self.traceStat(str(percent) + "% of relays have full local networks mapped")
         self.traceStat(str(other_percent) + "% of the network has been locally mapped")
+
+    def sparkLogGen(self, log):
+        '''
+            This receives a spark log dict and creates a (str) message from it for the tracer
+        '''
+        msg = log['mode'] + " from " + log['origin'] + " aimed at " + log['destination'] + " has arrived at " + log['arrival']
+        msg += "\n    " + log['status']
+        return msg
+
+    def getLogs(self):
+        '''
+            This method returns the orderdict containing all the logs
+        '''
+
+        return self.logs
