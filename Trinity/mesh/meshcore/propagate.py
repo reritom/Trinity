@@ -1,4 +1,3 @@
-
 try:
     from mesh.meshcore.cortex import Cortex
     from mesh.meshcore.relay import Relay
@@ -8,11 +7,12 @@ except:
     from relay import Relay
     from spark import Spark
 
-def propagate():
+def propagate(console):
     '''
         This method creates a cortex and adds some relay mappings
+        :param console: Used by the cortex to control console logging
     '''
-    core = Cortex(debug=False)
+    core = Cortex(debug=False, console=console)
 
     core.addRelay(1, [2,3,4,5])
     core.addRelay(2, [3,4])
@@ -42,12 +42,12 @@ def xCreateSpark():
     print(this_spark)
 
 
-def xInjectPing():
+def xInjectPing(console=True):
     '''
         Example - Manual ping injection
     '''
     # Create and propagate cortex of relays
-    core = propagate()
+    core = propagate(console)
 
     # Create a spark
     spark = Spark(origin=1, destination=None, mode='ping')
@@ -64,12 +64,12 @@ def xInjectPing():
     core.showLocal()
     core.showRelayStats()
 
-def xPingOne():
+def xPingOne(console=True):
     '''
         Example - Automatic ping injection
     '''
     # Create and propagate cortex of relays
-    core = propagate()
+    core = propagate(console)
 
     core.createPing(4)
 
@@ -81,12 +81,12 @@ def xPingOne():
     core.showRelayStats()
     core.compareMapping()
 
-def xPingAll():
+def xPingAll(console=True):
     '''
         Example - Have all the relays send a ping
     '''
     # Create and propagate a cortex of relays
-    core = propagate()
+    core = propagate(console)
 
     # Inject ping packets for each of the relays
     core.pingAll()
@@ -94,17 +94,19 @@ def xPingAll():
     # Process the packets
     core.routeBuffer()
 
-    # Show the resulks
+    # Show the results
     core.showLocal()
     core.showRelayStats()
     core.compareMapping()
 
-def xInjectExplorer():
+    return core.getLogs()
+
+def xInjectExplorer(console=True):
     '''
         Example - Manual ping injection
     '''
     # Create and propagate cortex of relays
-    core = propagate()
+    core = propagate(console)
 
     # Create a spark
     spark = Spark(origin=1, destination=None, mode='explorer')
@@ -121,12 +123,12 @@ def xInjectExplorer():
     #core.showLocal()
     core.showRelayStats()
 
-def xTingOne():
+def xTingOne(console=True):
     '''
         Example - Automatic ting injection
     '''
     # Create and propagate cortex of relays
-    core = propagate()
+    core = propagate(console)
 
     core.createTing(2)
 
@@ -138,12 +140,12 @@ def xTingOne():
     core.showRelayStats()
     core.compareMapping()
 
-def xTingAll():
+def xTingAll(console=True):
     '''
         Example - Have all the relays send a ting
     '''
     # Create and propagate a cortex of relays
-    core = propagate()
+    core = propagate(console)
 
     # Inject ting packets for each of the relays
     core.tingAll()
@@ -156,12 +158,12 @@ def xTingAll():
     core.showRelayStats()
     core.compareMapping()
 
-def xComplex():
+def xComplex(console=True):
     '''
         Example - complex
     '''
     # Create and propagate a cortex of relays
-    core = propagate()
+    core = propagate(console)
 
     # Inject ting packet
     core.createTing(1)
@@ -185,7 +187,7 @@ def xComplex():
 if __name__ == '__main__':
     print("\n<--- Start --->\n")
 
-    xPingAll()
+    xPingAll(console=False)
     #xInjectPing()
     #xPingOne()
     #xCreateSpark()

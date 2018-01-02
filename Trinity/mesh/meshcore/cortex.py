@@ -16,8 +16,9 @@ class Cortex(Tracer):
         made up of relays that can route packets/sparks
     '''
 
-    def __init__(self, debug=True):
+    def __init__(self, debug=True, console=True):
         Tracer.__init__(self)
+        self.console = console
         self.debug = debug
         self.logs = OrderedDict()
         self.log_count = 0
@@ -180,13 +181,15 @@ class Cortex(Tracer):
             # Pass the spark to the destination relay
             result_spark, result_log = self.relays[top_spark_in_buffer[0]].receiveSpark(dict(top_spark_in_buffer[1]))
 
+            # Trace the spark
             result_trace = self.sparkLogGen(result_log)
             self.traceSpark(result_trace)
 
+            # Add the this log to the main logs
             self.log_count += 1
             self.logs[self.log_count] = result_log
-            #also add the log to the big log list
 
+            # Simulate broadcast, adding receiving relays to the buffer
             if result_spark is not None:
                 for destination_of_result in self.graph[result_spark['header']['origin']]:
                     self.buffer.append((destination_of_result, result_spark))

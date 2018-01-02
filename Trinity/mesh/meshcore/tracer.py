@@ -3,6 +3,7 @@ import os
 class Tracer(object):
     def __init__(self):
         self.debug = True
+        self.console = True
 
         self.col = {'INFO':'\033[1;36;40m',
                     'DEBUG':'\033[1;35;40m',
@@ -32,6 +33,20 @@ class Tracer(object):
         '''
 
         self.debug = False
+
+    def consoleOn(self):
+        '''
+            Turn on console logs
+        '''
+
+        self.console = True
+
+    def consoleOff(self):
+        '''
+            Turn off console logs
+        '''
+
+        self.console = False
 
     def traceInfo(self, message):
         if self.validateMessage(message):
@@ -71,6 +86,8 @@ class Tracer(object):
 
         if not isinstance(message, str):
             return self.traceError("Message needs to be string for tracer")
+        elif self.console is False:
+            return False
         else:
             return True
 
