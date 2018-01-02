@@ -65,7 +65,8 @@ class Tracer(object):
             print("[" + self.col['DEBUG'] + "DEBUG" + self.col['NORMAL'] + "] " + message)
 
     def traceLine(self):
-        print("\n")
+        if self.console:
+            print("\n")
 
     def traceLineDB(self):
         if self.debug:

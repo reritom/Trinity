@@ -11,5 +11,5 @@ def test(request):
     return render(request, 'mesh/test.html')
 
 def gogo(request):
-    red = propagate()
-    return render(request, 'mesh/test.html')
+    logs = xPingAll(False)
+    return render(request, 'mesh/test.html', {'context':logs})

@@ -187,6 +187,7 @@ class Cortex(Tracer):
 
             # Add the this log to the main logs
             self.log_count += 1
+            result_log['Type'] = 'Spark'
             self.logs[self.log_count] = result_log
 
             # Simulate broadcast, adding receiving relays to the buffer
