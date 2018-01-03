@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html>
   <head>
     <meta charset="utf-8">
@@ -6,19 +7,35 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="shortcut icon" href="{%  static 'icons/snow.ico' %}">
+
   </head>
   <body>
     <h1>Hello</h1>
     <p>Dis is the main page</p>
 
     <div class="container">
-      {% for key, value in context.items %}
+      {% for order_key, this_log in context.items %}
       <div class="jumbotron">
-        {{ key }}
-        <hr>
-        {% for key2,value2 in value.items %}
-            {{ key2 }} : {{value2}} <br>
-        {% endfor %}
+        {{ order_key }}
+
+        {% if "Type" in this_log %}
+          {% if this_log.Type == "Spark" %}
+
+          <i class="fa fa-bolt fa-2x"></i>
+          <hr>
+
+          {% for key,value in this_log.items %}
+              {% if key != "Type" %}
+                  {{ key }} : {{value}} <br>
+              {% endif %}
+          {% endfor %}
+
+          {% elif this_log.Type == "Device" %}
+              <i class="fa fa-tablet fa-2x"></i> fa-2x
+          {% endif %}
+        {% endif %}
+
       </div>
     {% endfor %}
 </div>
