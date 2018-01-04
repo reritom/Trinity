@@ -10,32 +10,51 @@
 <link rel="shortcut icon" href="{%  static 'icons/snow.ico' %}">
 
   </head>
+
+  <style media="screen">
+    .Spark {
+      color:orange;
+    }
+    .Device {
+      color:tomato;
+    }
+    .origin {
+      color: pink;
+    }
+  </style>
   <body>
-    <h1>Hello</h1>
-    <p>Dis is the main page</p>
 
     <div class="container">
+
+    <div class="jumbotron">
+      <p>Dis is the filter block</p>
+      <p>Sparks from ?</p>
+      <p>Sparks to ?</p>
+      <p>Sparks arriving at ?</p>
+      <p>Show Sparks | Devices | Both</p>
+
+    </div>
+
       {% for order_key, this_log in context.items %}
-      <div class="jumbotron">
-        {{ order_key }}
+              {% if "Type" in this_log %}
+                  <div class="jumbotron">
+                  <div class="{{this_log.Type}}">
 
-        {% if "Type" in this_log %}
-          {% if this_log.Type == "Spark" %}
+                  {{ order_key }}
 
-          <i class="fa fa-bolt fa-2x"></i>
-          <hr>
+                  {% if this_log.Type == "Spark" %}
+                          <i class="fa fa-bolt fa-2x"></i>
+                          from <span class='origin'>{{this_log.origin}}</span> to {{this_log.destination}} has arrived at {{this_log.arrival}}
+                          </div>
+                          <hr>
+                          {{this_log.status}}
 
-          {% for key,value in this_log.items %}
-              {% if key != "Type" %}
-                  {{ key }} : {{value}} <br>
+                  {% elif this_log.Type == "Device" %}
+                          <i class="fa fa-tablet fa-2x"></i>
+                          found at {{this_log.at}}
+                          </div>
+                  {% endif %}
               {% endif %}
-          {% endfor %}
-
-          {% elif this_log.Type == "Device" %}
-              <i class="fa fa-tablet fa-2x"></i> fa-2x
-          {% endif %}
-        {% endif %}
-
       </div>
     {% endfor %}
 </div>

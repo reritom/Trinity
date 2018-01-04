@@ -12,4 +12,6 @@ def test(request):
 
 def gogo(request):
     logs = xPingAll(False)
+
+    logs[len(logs)+1] = {'Type':'Device', 'at':'R1Y'}
     return render(request, 'mesh/test.html', {'context':logs})
