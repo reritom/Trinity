@@ -14,11 +14,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-STATIC_URL = '/static/'
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+TEMPLATE_DIR =os.path.join(BASE_DIR, 'templates')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -27,9 +23,21 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 SECRET_KEY = '+#tt^5zex75^@q3he)=x5ko5l5d9%(k%hxj&18@35rxk0cu+8x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEPLOYSTAT = False
 
-ALLOWED_HOSTS = []
+if DEPLOYSTAT == True:
+    ALLOWED_HOSTS = ['tricle.xyz',
+                    'www.tricle.xyz',
+                    'reritom.pythonanywhere.com']
+    DEBUG = False
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    SECURE_SSL_REDIRECT = True
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+else:
+    ALLOWED_HOSTS = []
+    DEBUG = True
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 
 # Application definition
@@ -60,7 +68,7 @@ ROOT_URLCONF = 'Trinity.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [TEMPLATE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -124,3 +132,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+#STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+'''
+LOGIN_URL = 'home'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+'''
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
