@@ -279,6 +279,8 @@ When creating your own test, the general format is:
 - Make a packet which checks the relay name doesn't exist in the local network already.
 - Add ability to turn on/off relays and add/rename relays mid simulation
 - Add events at the beginning which get processed in the routeBuffer at specified times, such as topology changes, etc.
+- Add collision simulation and handling
+- Implement broadcast slots
 
 Tags -> [P] in progress, [X] completed
 
