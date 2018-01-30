@@ -266,7 +266,7 @@ When creating your own test, the general format is:
 
 - The cortex needs to be able to handle different channels with different rules, for example, to simulate a network which uses both RF and Bluetooth to connect relays.
 - Relative distances between relays should be added, so that the order that packets are received can be simulated.
-- Django GUI needs finishing
+- [P] Django GUI needs finishing
 - Basic routing protocols should be applied and documented.
 - Sensors should be added, to simulate devices interacting with the network
 - Add a spark (Pilgrim) which is destined for all relays, to searching for relays in the network which have connected devices. Similar behaviour to an Explorer
@@ -274,10 +274,13 @@ When creating your own test, the general format is:
 - Add an application layer to the sensor which allows for message encryption (#FeatureDrift)
 - For implementing routing (https://pdfs.semanticscholar.org/379d/087b54850fa6d98c07c2e3bb66f51a109179.pdf)
 - When running multiple injections, add tags to the logs of each section so that logs can be sorted in Django better.
-- Create a graph generator. Allow for 1 to n-1 neighbours. Allow the topology to change during the simulation.
+- [P] Create a graph generator. Allow for 1 to n-1 neighbours. Allow the topology to change during the simulation.
 - Make a packet for naming a relay and linking a sensor name to a relay.
 - Make a packet which checks the relay name doesn't exist in the local network already.
 - Add ability to turn on/off relays and add/rename relays mid simulation
+- Add events at the beginning which get processed in the routeBuffer at specified times, such as topology changes, etc.
+
+Tags -> [P] in progress, [X] completed
 
 ## Authors
 
