@@ -275,12 +275,14 @@ When creating your own test, the general format is:
 - For implementing routing (https://pdfs.semanticscholar.org/379d/087b54850fa6d98c07c2e3bb66f51a109179.pdf)
 - When running multiple injections, add tags to the logs of each section so that logs can be sorted in Django better.
 - [P] Create a graph generator. Allow for 1 to n-1 neighbours. Allow the topology to change during the simulation.
+- Allow creation of cortex from premade graph (def coreFromGraph: for each node, add relay)
 - Make a packet for naming a relay and linking a sensor name to a relay.
 - Make a packet which checks the relay name doesn't exist in the local network already.
 - Add ability to turn on/off relays and add/rename relays mid simulation
 - Add events at the beginning which get processed in the routeBuffer at specified times, such as topology changes, etc.
 - Add collision simulation and handling
 - Implement broadcast slots
+- Move examples from cortex to an interface layer
 
 Tags -> [P] in progress, [X] completed
 
