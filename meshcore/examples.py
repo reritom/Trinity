@@ -1,6 +1,11 @@
-from cortex import Cortex
-from relay import Relay
-from spark import Spark
+try:
+    from cortex import Cortex
+    from relay import Relay
+    from spark import Spark
+except:
+    from meshcore.cortex import Cortex
+    from meshcore.relay import Relay
+    from meshcore.spark import Spark
 
 def propagate(console):
     '''

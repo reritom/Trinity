@@ -1,6 +1,11 @@
-from relay import Relay
-from spark import Spark
-from tracer import Tracer
+try:
+    from relay import Relay
+    from spark import Spark
+    from tracer import Tracer
+except:
+    from meshcore.tracer import Tracer
+    from meshcore.relay import Relay
+    from meshcore.spark import Spark
 
 import copy
 from collections import OrderedDict

@@ -1,4 +1,7 @@
-from spark import Spark
+try:
+    from spark import Spark
+except:
+    from meshcore.spark import Spark
 
 import copy
 

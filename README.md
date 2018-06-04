@@ -6,9 +6,7 @@ Trinity is a Python based mesh network simulator with a Django HTML/CSS GUI. The
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
-The mesh simulator can be run directly from the command line without using the Django interface.
+The mesh simulator can be run on the command line and produces a html log file.
 
 ### Prerequisites
 
@@ -16,32 +14,22 @@ What things you need to install the software and how to install them
 
 ```
 Python 3.5+
-Django v1.11.1 (for GUI, not required for cmd-line usage)
 ```
 
 ### Installing
 
-A step by step series of examples that tell you have to get a development env running
+Installation is simple.
 
 - Clone the repository
 
-If you have installed Django:
-
-- Navigate to Trinity/Trinity (there should be a manage.py file in this directory)
-- Run the following command in the command line:
-```
-python manage.py runserver
-```
-
-- In your browser navigate to 127.0.0.1:8000 (localhost) to use the web interface
-
 From the command line:
-- Navigate to Trinity/Trinity/mesh/meshcore (This is where the mesh code is)
 
-The file propagate.py has some network creation and packet injection examples.
+- Navigate to Trinity/meshcore
+
+The file examples.py has some network creation and packet injection examples.
 In the file, under "if __name__=='__main__'", comment/uncomment the example you want to use and then run:
 ```
-python propagate.py
+python examples.py
 ```
 
 ## Terminology and basic introduction
@@ -74,15 +62,15 @@ A spark can be one of multiple modes which have different purposes.
 
     ping - An outward packet sent from a relay. If a ping is received, the only response is a pong. This allows a relay to map
            its local network.
-           
+
     pong - if a ping is received, a pong is sent, with its destination set as the origin of the ping.
-    
+
     ting - a relay broadcasting its presence, but expecting no reply.
-    
+
     explorer - An explorer is sent by a relay to map an entire network
-    
+
     atlas - explorers trigger the release of atlas packets, which return from different points in the network to the origin
-    
+
     emmisary - this carries an action message from an origin to a known destination. Such as sending a data request
 
 The spark class is used to create a spark, the following example creates a spark with the origin being a relay named '1', and no set destination, with the ping mode, and two actions (though pings wouldn't carry actions in practise):
@@ -112,12 +100,12 @@ The following example creates a cortex, and adds some relays into the graph. Wit
 ```
 core = Cortex(debug=False)
 
-core.addRelay(1, [2,3,4,5])
-core.addRelay(2, [3,4])
-core.addRelay(3, [4,5,13])
-core.addRelay(4, [7,8,9])
-core.addRelay(9, [10])
-core.addRelay(10, [11,12])
+core.add_relay(1, [2,3,4,5])
+core.add_relay(2, [3,4])
+core.add_relay(3, [4,5,13])
+core.add_relay(4, [7,8,9])
+core.add_relay(9, [10])
+core.add_relay(10, [11,12])
 ```
 
 Currently, the relay connections are assumed to be bi-directional. Therefore, for following snippet creates two relays with bi-directional communication implicitly.
@@ -125,8 +113,8 @@ Currently, the relay connections are assumed to be bi-directional. Therefore, fo
 ```
 core = Cortex(debug=False)
 
-core.addRelay(1, [2])
-# core.addRelay(2, [1]) # This line is not needed
+core.add_relay(1, [2])
+# core.add_relay(2, [1]) # This line is not needed
 ```
 
 ### Relay
@@ -148,35 +136,40 @@ def propagate():
     '''
     core = Cortex(debug=False)
 
-    core.addRelay(1, [2,3,4,5])
-    core.addRelay(2, [3,4])
-    core.addRelay(3, [4,5,13])
-    core.addRelay(4, [7,8,9])
-    core.addRelay(9, [10])
-    core.addRelay(10, [11,12])
+    core.add_relay(1, [2,3,4,5])
+    core.add_relay(2, [3,4])
+    core.add_relay(3, [4,5,13])
+    core.add_relay(4, [7,8,9])
+    core.add_relay(9, [10])
+    core.add_relay(10, [11,12])
 
     return core
-    
-def xTingAll():
-    '''
-        Example - Have all the relays send a ting
-    '''
-    # Create and propagate a cortex of relays
-    core = propagate()
 
-    # Inject ting packets for each of the relays
-    core.tingAll()
+  def x_ting_all(console=True):
+      '''
+          Example - Have all the relays send a ting
+      '''
+      # Create and propagate a cortex of relays
+      core = propagate(console)
 
-    # Process the packets
-    core.routeBuffer()
+      # Inject ting packets for each of the relays
+      for relay in core.relays:
+          # Create a spark
+          spark = Spark(origin=core.relays[relay].name, destination=None, mode='ting')
+          spark.encode_spark()
+          this_spark = spark.get_spark()
+          core.inject(this_spark)
 
-    # Show the resulks
-    core.showLocal()
-    core.showRelayStats()
-    core.compareMapping()
-    
+      # Process the packets
+      core.route_buffer()
+
+      # Show the resulks
+      core.show_local()
+      core.show_relay_stats()
+      core.compare_mappings()
+
 if __name__ == '__main__':
-    xTingAll()
+    x_ting_all()
 ```
 
 ### Create a single packet and inject it
@@ -188,16 +181,16 @@ def propagate():
     '''
     core = Cortex(debug=False)
 
-    core.addRelay(1, [2,3,4,5])
-    core.addRelay(2, [3,4])
-    core.addRelay(3, [4,5,13])
-    core.addRelay(4, [7,8,9])
-    core.addRelay(9, [10])
-    core.addRelay(10, [11,12])
+    core.add_relay(1, [2,3,4,5])
+    core.add_relay(2, [3,4])
+    core.add_relay(3, [4,5,13])
+    core.add_relay(4, [7,8,9])
+    core.add_relay(9, [10])
+    core.add_relay(10, [11,12])
 
     return core
-    
-def xInjectExplorer():
+
+def x_inject_explorer():
     '''
         Example - Manual ping injection
     '''
@@ -206,19 +199,19 @@ def xInjectExplorer():
 
     # Create a spark
     spark = Spark(origin=1, destination=None, mode='explorer')
-    spark.encodeSpark()
-    this_spark = spark.getSpark()
+    spark.encode_spark()
+    this_spark = spark.get_spark()
 
     # Inject spark in to the cortex
     core.inject(this_spark)
-    core.routeBuffer()
+    core.route_buffer()
 
     # Results
-    core.showLocal()
-    core.showRelayStats()
-    
+    core.show_local()
+    core.show_relay_stats()
+
 if __name__ == '__main__':
-    xInjectExplorer()
+    x_inject_explorer()
 ```
 
 ### Small Example with walkthrough
@@ -266,7 +259,6 @@ When creating your own test, the general format is:
 
 - The cortex needs to be able to handle different channels with different rules, for example, to simulate a network which uses both RF and Bluetooth to connect relays.
 - Relative distances between relays should be added, so that the order that packets are received can be simulated.
-- [P] Django GUI needs finishing
 - Basic routing protocols should be applied and documented.
 - Sensors should be added, to simulate devices interacting with the network
 - Add a spark (Pilgrim) which is destined for all relays, to searching for relays in the network which have connected devices. Similar behaviour to an Explorer
