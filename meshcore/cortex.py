@@ -102,29 +102,6 @@ class Cortex(Tracer):
 
         return self.graph
 
-    def ping_all(self):
-        '''
-            This method injects a ping packet from each of the relays.
-        '''
-
-        for relay in self.relays:
-            # Create a spark
-            spark = Spark(origin=self.relays[relay].name, destination=None, mode='ping')
-            spark.encode_spark()
-            this_spark = spark.get_spark()
-            self.inject(this_spark)
-
-    def ting_all(self):
-        '''
-            This method injects a ting packet from each of the relays.
-        '''
-
-        for relay in self.relays:
-            # Create a spark
-            spark = Spark(origin=self.relays[relay].name, destination=None, mode='ting')
-            spark.encode_spark()
-            this_spark = spark.get_spark()
-            self.inject(this_spark)
 
     def inject(self, spark):
         '''
@@ -142,25 +119,6 @@ class Cortex(Tracer):
 
         return True
 
-    def create_ping(self, relay_name):
-        '''
-            For a relay, create a ping
-        '''
-
-        spark = Spark(origin=relay_name, destination=None, mode='ping')
-        spark.encode_spark()
-        this_spark = spark.get_spark()
-        self.inject(this_spark)
-
-    def create_ting(self, relay_name):
-        '''
-            For a relay, create a ping
-        '''
-
-        spark = Spark(origin=relay_name, destination=None, mode='ting')
-        spark.encode_spark()
-        this_spark = spark.get_spark()
-        self.inject(this_spark)
 
     @Tracer.header_style
     def route_buffer(self):

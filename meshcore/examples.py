@@ -66,7 +66,10 @@ def x_ping_one(console=True):
     # Create and propagate cortex of relays
     core = propagate(console)
 
-    core.create_ping(4)
+    spark = Spark(origin=4, destination=None, mode='ping')
+    spark.encode_spark()
+    this_spark = spark.get_spark()
+    core.inject(this_spark)
 
     # Process the packets
     core.route_buffer()
@@ -84,7 +87,12 @@ def x_ping_all(console=True):
     core = propagate(console)
 
     # Inject ping packets for each of the relays
-    core.ping_all()
+    for relay in core.relays:
+        # Create a spark
+        spark = Spark(origin=core.relays[relay].name, destination=None, mode='ping')
+        spark.encode_spark()
+        this_spark = spark.get_spark()
+        core.inject(this_spark)
 
     # Process the packets
     core.route_buffer()
@@ -125,7 +133,10 @@ def x_ting_one(console=True):
     # Create and propagate cortex of relays
     core = propagate(console)
 
-    core.create_ting(2)
+    spark = Spark(origin=2, destination=None, mode='ting')
+    spark.encode_spark()
+    this_spark = spark.get_spark()
+    core.inject(this_spark)
 
     # Process the packets
     core.route_buffer()
@@ -143,7 +154,12 @@ def x_ting_all(console=True):
     core = propagate(console)
 
     # Inject ting packets for each of the relays
-    core.ting_all()
+    for relay in core.relays:
+        # Create a spark
+        spark = Spark(origin=core.relays[relay].name, destination=None, mode='ting')
+        spark.encode_spark()
+        this_spark = spark.get_spark()
+        core.inject(this_spark)
 
     # Process the packets
     core.route_buffer()
@@ -161,10 +177,16 @@ def x_complex(console=True):
     core = propagate(console)
 
     # Inject ting packet
-    core.create_ting(1)
+    spark = Spark(origin=1, destination=None, mode='ting')
+    spark.encode_spark()
+    this_spark = spark.get_spark()
+    core.inject(this_spark)
 
     # Inject a ping packet
-    core.create_ping(12)
+    spark = Spark(origin=12, destination=None, mode='ping')
+    spark.encode_spark()
+    this_spark = spark.get_spark()
+    core.inject(this_spark)
 
     # Create an explorer spark
     spark = Spark(origin=1, destination=None, mode='explorer')
@@ -182,7 +204,7 @@ def x_complex(console=True):
 if __name__ == '__main__':
     print("\n<--- Start --->\n")
 
-    x_ping_all(console=True)
+    x_ping_all()
     #x_inject_ping()
     #x_ping_one()
     #x_create_spark()
