@@ -1,48 +1,43 @@
-try:
-    from mesh.meshcore.cortex import Cortex
-    from mesh.meshcore.relay import Relay
-    from mesh.meshcore.spark import Spark
-except:
-    from cortex import Cortex
-    from relay import Relay
-    from spark import Spark
+from cortex import Cortex
+from relay import Relay
+from spark import Spark
 
 def propagate(console):
     '''
         This method creates a cortex and adds some relay mappings
         :param console: Used by the cortex to control console logging
     '''
-    core = Cortex(debug=False, console=console)
+    core = Cortex(debug=True, console=console)
 
-    core.addRelay(1, [2,3,4,5])
-    core.addRelay(2, [3,4])
-    core.addRelay(3, [4,5,13])
-    core.addRelay(4, [7,8,9])
-    core.addRelay(9, [10])
-    core.addRelay(10, [11,12])
+    core.add_relay(1, [2,3,4,5])
+    core.add_relay(2, [3,4])
+    core.add_relay(3, [4,5,13])
+    core.add_relay(4, [7,8,9])
+    core.add_relay(9, [10])
+    core.add_relay(10, [11,12])
 
     return core
 
-def xCreateSpark():
+def x_create_spark():
     '''
         Example - Create a ping spark from relay 1
     '''
     spark = Spark(origin=1, destination=None, mode='ping')
 
     # Add two actions to the message
-    spark.addAction("RUN")
-    spark.addAction("RESTART")
+    spark.add_action("RUN")
+    spark.add_action("RESTART")
 
     # Show the spark
-    spark.showSpark()
+    spark.show_spark()
 
     # Encode the spark and show the result
-    spark.encodeSpark()
-    this_spark = spark.getSpark()
+    spark.encode_spark()
+    this_spark = spark.get_spark()
     print(this_spark)
 
 
-def xInjectPing(console=True):
+def x_inject_ping(console=True):
     '''
         Example - Manual ping injection
     '''
@@ -51,37 +46,37 @@ def xInjectPing(console=True):
 
     # Create a spark
     spark = Spark(origin=1, destination=None, mode='ping')
-    spark.encodeSpark()
-    this_spark = spark.getSpark()
+    spark.encode_spark()
+    this_spark = spark.get_spark()
 
     print(this_spark)
     print("\n")
 
     # Inject spark in to the cortex
     core.inject(this_spark)
-    core.routeBuffer()
+    core.route_buffer()
 
-    core.showLocal()
-    core.showRelayStats()
+    core.show_local()
+    core.show_relay_stats()
 
-def xPingOne(console=True):
+def x_ping_one(console=True):
     '''
         Example - Automatic ping injection
     '''
     # Create and propagate cortex of relays
     core = propagate(console)
 
-    core.createPing(4)
+    core.create_ping(4)
 
     # Process the packets
-    core.routeBuffer()
+    core.route_buffer()
 
     # Show the resulks
-    core.showLocal()
-    core.showRelayStats()
-    core.compareMapping()
+    core.show_local()
+    core.show_relay_stats()
+    core.compare_mapping()
 
-def xPingAll(console=True):
+def x_ping_all(console=True):
     '''
         Example - Have all the relays send a ping
     '''
@@ -89,19 +84,19 @@ def xPingAll(console=True):
     core = propagate(console)
 
     # Inject ping packets for each of the relays
-    core.pingAll()
+    core.ping_all()
 
     # Process the packets
-    core.routeBuffer()
+    core.route_buffer()
 
     # Show the results
-    core.showLocal()
-    core.showRelayStats()
-    core.compareMapping()
+    core.show_local()
+    core.show_relay_stats()
+    core.compare_mappings()
 
-    return core.getLogs()
+    return core.get_logs()
 
-def xInjectExplorer(console=True):
+def x_inject_explorer(console=True):
     '''
         Example - Manual ping injection
     '''
@@ -110,37 +105,37 @@ def xInjectExplorer(console=True):
 
     # Create a spark
     spark = Spark(origin=1, destination=None, mode='explorer')
-    spark.encodeSpark()
-    this_spark = spark.getSpark()
+    spark.encode_spark()
+    this_spark = spark.get_spark()
 
     print(this_spark)
     print("\n")
 
     # Inject spark in to the cortex
     core.inject(this_spark)
-    core.routeBuffer()
+    core.route_buffer()
 
     #core.showLocal()
-    core.showRelayStats()
+    core.show_relay_stats()
 
-def xTingOne(console=True):
+def x_ting_one(console=True):
     '''
         Example - Automatic ting injection
     '''
     # Create and propagate cortex of relays
     core = propagate(console)
 
-    core.createTing(2)
+    core.create_ting(2)
 
     # Process the packets
-    core.routeBuffer()
+    core.route_buffer()
 
     # Show the resulks
     #core.showLocal()
-    core.showRelayStats()
-    core.compareMapping()
+    core.show_relay_stats()
+    core.compare_mappings()
 
-def xTingAll(console=True):
+def x_ting_all(console=True):
     '''
         Example - Have all the relays send a ting
     '''
@@ -148,17 +143,17 @@ def xTingAll(console=True):
     core = propagate(console)
 
     # Inject ting packets for each of the relays
-    core.tingAll()
+    core.ting_all()
 
     # Process the packets
-    core.routeBuffer()
+    core.route_buffer()
 
     # Show the resulks
-    core.showLocal()
-    core.showRelayStats()
-    core.compareMapping()
+    core.show_local()
+    core.show_relay_stats()
+    core.compare_mappings()
 
-def xComplex(console=True):
+def x_complex(console=True):
     '''
         Example - complex
     '''
@@ -166,35 +161,35 @@ def xComplex(console=True):
     core = propagate(console)
 
     # Inject ting packet
-    core.createTing(1)
+    core.create_ting(1)
 
     # Inject a ping packet
-    core.createPing(12)
+    core.create_ping(12)
 
     # Create an explorer spark
     spark = Spark(origin=1, destination=None, mode='explorer')
-    spark.encodeSpark()
-    this_spark = spark.getSpark()
+    spark.encode_spark()
+    this_spark = spark.get_spark()
 
     core.inject(this_spark)
 
-    core.routeBuffer()
+    core.route_buffer()
 
-    core.showRelayStats()
-    core.compareMapping()
+    core.show_relay_stats()
+    core.compare_mappings()
 
 
 if __name__ == '__main__':
     print("\n<--- Start --->\n")
 
-    xPingAll(console=False)
-    #xInjectPing()
-    #xPingOne()
-    #xCreateSpark()
-    #xInjectExplorer()
-    #xTingOne()
-    #xTingAll()
-    #xComplex()
+    x_ping_all(console=True)
+    #x_inject_ping()
+    #x_ping_one()
+    #x_create_spark()
+    #x_inject_explorer()
+    #x_ting_one()
+    #x_ting_all()
+    #x_complex()
     #propagate()
 
     print("\n<--- End --->\n")

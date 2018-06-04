@@ -1,6 +1,6 @@
 import random
 
-def graphMaker(name_min, name_max, name_chance, node_min, node_max, node_chance, spread, topology):
+def graph_maker(name_min, name_max, name_chance, node_min, node_max, node_chance, spread, topology):
     '''
         Relay name range (i.e 1-100 or 101-200), this allows..
         ..for bridging of seperate graphs
@@ -55,4 +55,4 @@ def graphMaker(name_min, name_max, name_chance, node_min, node_max, node_chance,
     return Graph
 
 if __name__ == '__main__':
-    graphMaker(1,100,0.5,1,6,0.5,0.8, 'tree')
+    graph_maker(1,100,0.5,1,6,0.5,0.8, 'tree')

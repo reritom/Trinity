@@ -1,7 +1,4 @@
-try:
-    from mesh.meshcore.spark import Spark
-except:
-    from spark import Spark
+from spark import Spark
 
 import copy
 
@@ -14,7 +11,7 @@ class Relay(object):
         self.number_of_broadcasts = 0
         self.id_buffer = dict() # Key is message ID, value is timestamp, daemon clears this up.
 
-    def receiveSpark(self, spark):
+    def receive_spark(self, spark):
         '''
             This method receives a spark from the cortex, calls the decoder and subsequent routing,
             and then returns the modified spark to the cortex
@@ -23,23 +20,23 @@ class Relay(object):
 
         self.packets_received += 1
 
-        routed_spark = self.decodeSpark(spark)
+        routed_spark = self.decode_spark(spark)
 
         if routed_spark[0] is not None:
             self.number_of_broadcasts += 1
 
         return routed_spark
 
-    def decodeSpark(self, spark):
+    def decode_spark(self, spark):
         '''
             In practice, the spark will be encoded and need decoding before routing (only the header needs decoding).
             Here, the decoded spark is basically the actual spark.
         '''
         decoded_spark = spark
 
-        return self.routeSpark(decoded_spark)
+        return self.route_spark(decoded_spark)
 
-    def routeSpark(self, spark):
+    def route_spark(self, spark):
         '''
             This method modifies the spark for routing purposes based on the contents of it.
         '''

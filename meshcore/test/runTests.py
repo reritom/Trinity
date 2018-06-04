@@ -6,7 +6,7 @@
 
 '''
 
-def runAll():
+def run_all():
     import tests
     for i in dir(tests):
         item = getattr(tests,i)
@@ -16,4 +16,4 @@ def runAll():
             print("\n")
 
 if __name__ == '__main__':
-    runAll()
+    run_all()

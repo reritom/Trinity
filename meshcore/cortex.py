@@ -1,11 +1,6 @@
-try:
-    from mesh.meshcore.relay import Relay
-    from mesh.meshcore.spark import Spark
-    from mesh.meshcore.tracer import Tracer
-except:
-    from relay import Relay
-    from spark import Spark
-    from tracer import Tracer
+from relay import Relay
+from spark import Spark
+from tracer import Tracer
 
 import copy
 from collections import OrderedDict
@@ -27,7 +22,7 @@ class Cortex(Tracer):
         self.graph = dict()
         self.buffer = list()
 
-    def addRelay(self, name, neighbours):
+    def add_relay(self, name, neighbours):
         '''
             A relay is used to route the sparks across the network.
             This method creates a new relay and updates the cortex network graph.
@@ -45,45 +40,45 @@ class Cortex(Tracer):
             self.graph[name] = list()
             self.graph[name].extend(str(neighbour) for neighbour in neighbours)
             #self.trace('debug', ("Relay " + name + " not in graph, adding now "))
-            self.traceDebug("Relay " + name + " not in graph, adding now ")
+            self.trace_debug("Relay " + name + " not in graph, adding now ")
         else:
             # Add all the neighbours to this relays graph, which haven't already been added
-            self.traceDebug("Relay " + name + " IS in graph")
+            self.trace_debug("Relay " + name + " IS in graph")
             for neighbour in neighbours:
                 if str(neighbour) not in self.graph[name]:
-                    self.traceDebug("Relay " + name + " IS in graph, neighbour " + str(neighbour) + " is being added to this relays graph")
+                    self.trace_debug("Relay " + name + " IS in graph, neighbour " + str(neighbour) + " is being added to this relays graph")
                     self.graph[name].append(str(neighbour))
 
         # Add to relays
         if name not in self.relays:
-            self.traceDebug("Relay " + name + " not in relays, adding it now")
+            self.trace_debug("Relay " + name + " not in relays, adding it now")
             self.relays[name] = Relay(name=name)
 
         # Add neighbours to graph, with this name as a neighbour
         for neighbour in neighbours:
             if str(neighbour) not in self.graph:
-                self.traceDebug("Relay " + name + " neighbour " + str(neighbour) + " not in graph, adding now ")
+                self.trace_debug("Relay " + name + " neighbour " + str(neighbour) + " not in graph, adding now ")
                 self.graph[str(neighbour)] = list()
                 self.graph[str(neighbour)].append(name)
             else:
                 # Neighbour is in graph, now make sure this relay is in that neighbours graph
                 if name not in self.graph[str(neighbour)]:
-                    self.traceDebug("Relay " + name + " not in " + str(neighbour) + "'s graph, adding now ")
+                    self.trace_debug("Relay " + name + " not in " + str(neighbour) + "'s graph, adding now ")
                     self.graph[str(neighbour)].append(name)
 
         # Add neighbours to relays
         for neighbour in neighbours:
             if str(neighbour) not in self.relays:
-                self.traceDebug("Relay " + name + " neighbour " + str(neighbour) + " not in self.relays, adding now ")
+                self.trace_debug("Relay " + name + " neighbour " + str(neighbour) + " not in self.relays, adding now ")
                 self.relays[str(neighbour)] = Relay(name=str(neighbour))
 
-        self.traceLineDB()
+        self.trace_line_debug()
 
-    def bridgeGraph(self, graph, bridge_link, existing_link):
+    def bridge_graph(self, graph, bridge_link, existing_link):
         pass
 
-    @Tracer.headerStyle
-    def viewCortex(self):
+    @Tracer.header_style
+    def view_cortex(self):
         '''
             This method shows the graph of the cortex
         '''
@@ -91,23 +86,23 @@ class Cortex(Tracer):
         print('<--- Cortex Graph --->')
 
         for key, value in sorted(self.graph.items()):
-            self.traceInfo(str(key) + ': ' + ','.join(str(e) for e in value))
+            self.trace_info(str(key) + ': ' + ','.join(str(e) for e in value))
 
-    def getRelays(self):
+    def get_relays(self):
         '''
             This method returns the relays
         '''
 
         return self.relays
 
-    def getCortex(self):
+    def get_cortex(self):
         '''
             This method returns the graph of the cortex
         '''
 
         return self.graph
 
-    def pingAll(self):
+    def ping_all(self):
         '''
             This method injects a ping packet from each of the relays.
         '''
@@ -115,11 +110,11 @@ class Cortex(Tracer):
         for relay in self.relays:
             # Create a spark
             spark = Spark(origin=self.relays[relay].name, destination=None, mode='ping')
-            spark.encodeSpark()
-            this_spark = spark.getSpark()
+            spark.encode_spark()
+            this_spark = spark.get_spark()
             self.inject(this_spark)
 
-    def tingAll(self):
+    def ting_all(self):
         '''
             This method injects a ting packet from each of the relays.
         '''
@@ -127,8 +122,8 @@ class Cortex(Tracer):
         for relay in self.relays:
             # Create a spark
             spark = Spark(origin=self.relays[relay].name, destination=None, mode='ting')
-            spark.encodeSpark()
-            this_spark = spark.getSpark()
+            spark.encode_spark()
+            this_spark = spark.get_spark()
             self.inject(this_spark)
 
     def inject(self, spark):
@@ -147,28 +142,28 @@ class Cortex(Tracer):
 
         return True
 
-    def createPing(self, relay_name):
+    def create_ping(self, relay_name):
         '''
             For a relay, create a ping
         '''
 
         spark = Spark(origin=relay_name, destination=None, mode='ping')
-        spark.encodeSpark()
-        this_spark = spark.getSpark()
+        spark.encode_spark()
+        this_spark = spark.get_spark()
         self.inject(this_spark)
 
-    def createTing(self, relay_name):
+    def create_ting(self, relay_name):
         '''
             For a relay, create a ping
         '''
 
         spark = Spark(origin=relay_name, destination=None, mode='ting')
-        spark.encodeSpark()
-        this_spark = spark.getSpark()
+        spark.encode_spark()
+        this_spark = spark.get_spark()
         self.inject(this_spark)
 
-    @Tracer.headerStyle
-    def routeBuffer(self):
+    @Tracer.header_style
+    def route_buffer(self):
         '''
             The buffer contains all the sparks that need to be sent to relays.
             This method handles the routing of all these sparks
@@ -179,11 +174,11 @@ class Cortex(Tracer):
             top_spark_in_buffer = self.buffer.pop(0)
 
             # Pass the spark to the destination relay
-            result_spark, result_log = self.relays[top_spark_in_buffer[0]].receiveSpark(dict(top_spark_in_buffer[1]))
+            result_spark, result_log = self.relays[top_spark_in_buffer[0]].receive_spark(dict(top_spark_in_buffer[1]))
 
             # Trace the spark
-            result_trace = self.sparkLogGen(result_log)
-            self.traceSpark(result_trace)
+            result_trace = self.spark_log_gen(result_log)
+            self.trace_spark(result_trace)
 
             # Add the this log to the main logs
             self.log_count += 1
@@ -195,17 +190,17 @@ class Cortex(Tracer):
                 for destination_of_result in self.graph[result_spark['header']['origin']]:
                     self.buffer.append((destination_of_result, result_spark))
 
-            self.traceLine()
+            self.trace_line()
 
-    def showLocal(self):
+    def show_local(self):
         '''
             This method shows the local mapping for each relay, as inferred from pinging
         '''
         for relay in self.relays:
-            self.traceInfo(self.relays[relay].name + ":" +  ','.join(str(e) for e in self.relays[relay].locals))
-        self.traceLine()
+            self.trace_info(self.relays[relay].name + ":" +  ','.join(str(e) for e in self.relays[relay].locals))
+        self.trace_line()
 
-    def showRelayStats(self):
+    def show_relay_stats(self):
         '''
             This method shows the stats after session
         '''
@@ -216,9 +211,9 @@ class Cortex(Tracer):
             total_received += self.relays[relay].packets_received
             total_broadcast += self.relays[relay].number_of_broadcasts
 
-        self.traceStat("Total packets received: " + str(total_received) + ", Total broadcasts: " + str(total_broadcast))
+        self.trace_stat("Total packets received: " + str(total_received) + ", Total broadcasts: " + str(total_broadcast))
 
-    def compareMapping(self):
+    def compare_mappings(self):
         '''
             This map compares the actual network graph, with what the relays can see locally
         '''
@@ -247,10 +242,10 @@ class Cortex(Tracer):
         percent = float(success_counter)/float(len(self.relays)) * 100
         other_percent = float(full_success) / float(full_count) * 100
 
-        self.traceStat(str(percent) + "% of relays have full local networks mapped")
-        self.traceStat(str(other_percent) + "% of the network has been locally mapped")
+        self.trace_stat(str(percent) + "% of relays have full local networks mapped")
+        self.trace_stat(str(other_percent) + "% of the network has been locally mapped")
 
-    def sparkLogGen(self, log):
+    def spark_log_gen(self, log):
         '''
             This receives a spark log dict and creates a (str) message from it for the tracer
         '''
@@ -258,7 +253,7 @@ class Cortex(Tracer):
         msg += "\n    " + log['status']
         return msg
 
-    def getLogs(self):
+    def get_logs(self):
         '''
             This method returns the orderdict containing all the logs
         '''

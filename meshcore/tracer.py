@@ -20,80 +20,80 @@ class Tracer(object):
                 self.col[col] = ""
 
 
-    def debugOn(self):
+    def debug_on(self):
         '''
             Set the debug to True
         '''
 
         self.debug = True
 
-    def debugOff(self):
+    def debug_off(self):
         '''
             Set the debug to False
         '''
 
         self.debug = False
 
-    def consoleOn(self):
+    def console_on(self):
         '''
             Turn on console logs
         '''
 
         self.console = True
 
-    def consoleOff(self):
+    def console_off(self):
         '''
             Turn off console logs
         '''
 
         self.console = False
 
-    def traceInfo(self, message):
-        if self.validateMessage(message):
+    def trace_info(self, message):
+        if self.validate_message(message):
             print("[" + self.col['INFO'] + "INFO" + self.col['NORMAL'] + "] " + message)
 
-    def traceError(self, message):
-        if self.validateMessage(message):
+    def trace_error(self, message):
+        if self.validate_message(message):
             print("[" + self.col['ERROR'] + "ERROR" + self.col['NORMAL'] + "] " + message)
 
-    def traceWarning(self, message):
-        if self.validateMessage(message):
+    def trace_warning(self, message):
+        if self.validate_message(message):
             print("[" + self.col['WARNING'] + "WARNING" + self.col['NORMAL'] + "] " + message)
 
-    def traceDebug(self, message):
-        if self.validateMessage(message) and self.debug:
+    def trace_debug(self, message):
+        if self.validate_message(message) and self.debug:
             print("[" + self.col['DEBUG'] + "DEBUG" + self.col['NORMAL'] + "] " + message)
 
-    def traceLine(self):
+    def trace_line(self):
         if self.console:
             print("\n")
 
-    def traceLineDB(self):
+    def trace_line_debug(self):
         if self.debug:
             print("\n")
 
-    def traceStat(self, message):
-        if self.validateMessage(message):
+    def trace_stat(self, message):
+        if self.validate_message(message):
             print("[" + self.col['STAT'] + "STAT" + self.col['NORMAL'] + "] " + message)
 
-    def traceSpark(self, message):
-        if self.validateMessage(message):
+    def trace_spark(self, message):
+        if self.validate_message(message):
             print("[" + self.col['SPARK'] + "SPARK" + self.col['NORMAL'] + "] " + message)
 
-    def validateMessage(self, message):
+    def validate_message(self, message):
         '''
             Check that the tracer message is a string.
         '''
 
         if not isinstance(message, str):
-            return self.traceError("Message needs to be string for tracer")
+            return self.trace_error("Message needs to be string for tracer")
         elif self.console is False:
             return False
         else:
             return True
 
     @staticmethod
-    def headerStyle(viewFunction):
+    def header_style(viewFunction):
         '''
             This method take a function designed for viewing data, and prints
             a wrapper for it.
@@ -101,8 +101,8 @@ class Tracer(object):
 
         def wrapper(*args):
             this = args[0]
-            this.traceWarning("Start of " + viewFunction.__name__)
+            this.trace_warning("Start of " + viewFunction.__name__)
             viewFunction(*args)
-            this.traceWarning("End of " + viewFunction.__name__)
+            this.trace_warning("End of " + viewFunction.__name__)
             return True
         return wrapper
